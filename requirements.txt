@@ -1,0 +1,12 @@
+Django
+django-allauth
+django-rest-auth
+djangorestframework
+djangorestframework-stubs
+Jinja2
+mysql-connector
+mysqlclient
+uwsgi
+request
+requests
+urllib3

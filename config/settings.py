@@ -10,8 +10,8 @@ USE_TZ = True
 LANGUAGE_CODE = 'ko-kr'
 TIME_ZONE = 'Asia/Seoul'
 STATIC_URL = '/static/'
-WSGI_APPLICATION = 'base.wsgi.application'
-ROOT_URLCONF = 'base.urls'
+WSGI_APPLICATION = 'config.wsgi.application'
+ROOT_URLCONF = 'config.urls'
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -49,6 +49,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20
 }
@@ -78,11 +81,12 @@ AUTHENTICATION_BACKENDS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'study',
-        'USER': 'root',
-        'PASSWORD': '0000',
+        'NAME': 'django',
+        'USER': 'django',
+        'PASSWORD': '1234',
         'HOST': '35.239.104.137',
         'PORT': '3306',
+        'OPTION': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
     }
 }
 
@@ -118,3 +122,4 @@ EMAIL_HOST_PASSWORD = 'pwd'
 #REST_USE_JWT = True
 REST_SESSION_LOGIN = False
 SITE_ID = 1
+APPEND_SLASH = False
