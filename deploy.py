@@ -9,14 +9,17 @@ REPO_URL = ""
 PROJECT_NAME = "django_web"
 REMOTE_HOST_SSH = "35.239.104.137"
 REMOTE_HOST = "35.239.104.137"
-REMOTE_USER = "root"
-REMOTE_PASSWORD = ""
+REMOTE_USER = "leekm0227"
+REMOTE_PASSWORD = "0000"
 
 env.user = REMOTE_USER
 env.hosts = [REMOTE_HOST_SSH]
 env.password = REMOTE_PASSWORD
 
 project_folder = '/home/data/{}'.format(PROJECT_NAME)
+
+def start():
+    pass
 
 
 def _update_virtualenv():

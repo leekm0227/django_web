@@ -1,4 +1,5 @@
 import os
+from django.contrib.sites.models import Site
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'h9lb28wfcxyxt)bt!l2ep-4(b4_!9#bv&(x0-nb^7s-62_qvx#'
@@ -6,13 +7,14 @@ SECRET_KEY = 'h9lb28wfcxyxt)bt!l2ep-4(b4_!9#bv&(x0-nb^7s-62_qvx#'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+APPEND_SLASH = False
+SITE_ID = 1
 LANGUAGE_CODE = 'ko-kr'
 TIME_ZONE = 'Asia/Seoul'
 STATIC_URL = '/static/'
 WSGI_APPLICATION = 'config.wsgi.application'
 ROOT_URLCONF = 'config.urls'
-SITE_ID = 1
-APPEND_SLASH = False
+DOMAIN = 'thell.ga'
 
 INSTALLED_APPS = [
     'api',
@@ -111,7 +113,7 @@ EMAIL_HOST_PASSWORD = 'pwd'
 REST_SESSION_LOGIN = False
 
 
-if True:
+if DOMAIN != Site.objects.get_current().domain:
     API_URL = "http://127.0.0.1:8000/api"
     ALLOWED_HOSTS = []
     DEBUG = True
@@ -128,7 +130,7 @@ if True:
         }
     }
 else:
-    API_URL = "https://thell.ga/api"
+    API_URL = "https://{}/api".format(DOMAIN)
     ALLOWED_HOSTS = ['*']
     DEBUG = False
 
