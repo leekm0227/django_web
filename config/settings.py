@@ -1,9 +1,8 @@
 import os
-import posixpath
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'h9lb28wfcxyxt)bt!l2ep-4(b4_!9#bv&(x0-nb^7s-62_qvx#'
-DEBUG = True
+
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -12,7 +11,8 @@ TIME_ZONE = 'Asia/Seoul'
 STATIC_URL = '/static/'
 WSGI_APPLICATION = 'config.wsgi.application'
 ROOT_URLCONF = 'config.urls'
-ALLOWED_HOSTS = []
+SITE_ID = 1
+APPEND_SLASH = False
 
 INSTALLED_APPS = [
     'api',
@@ -78,18 +78,6 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend"
 )
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',
-        'USER': 'django',
-        'PASSWORD': '1234',
-        'HOST': '35.239.104.137',
-        'PORT': '3306',
-        'OPTION': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
-    }
-}
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -121,5 +109,37 @@ EMAIL_HOST_USER = 'id'
 EMAIL_HOST_PASSWORD = 'pwd'
 #REST_USE_JWT = True
 REST_SESSION_LOGIN = False
-SITE_ID = 1
-APPEND_SLASH = False
+
+
+if True:
+    API_URL = "http://127.0.0.1:8000/api"
+    ALLOWED_HOSTS = []
+    DEBUG = True
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'django',
+            'USER': 'django',
+            'PASSWORD': '1234',
+            'HOST': '35.239.104.137',
+            'PORT': '3306',
+            'OPTION': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
+        }
+    }
+else:
+    API_URL = "https://thell.ga/api"
+    ALLOWED_HOSTS = ['*']
+    DEBUG = False
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'django',
+            'USER': 'django',
+            'PASSWORD': '1234',
+            'HOST': '35.239.104.137',
+            'PORT': '3306',
+            'OPTION': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
+        }
+    }

@@ -1,9 +1,10 @@
 from django.shortcuts import render
+from django.conf import settings
 import requests
 
 
 def index(request):
-    response = requests.get('http://127.0.0.1/api/articles')
+    response = requests.get(settings.API_URL + '/api/articles')
     context = {}
 
     if response.status_code == 200:
