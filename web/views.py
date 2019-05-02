@@ -4,7 +4,7 @@ import requests
 
 
 def index(request):
-    response = requests.get(settings.API_URL + '/api/articles')
+    response = requests.get(settings.API_URL + '/articles')
     context = {}
 
     if response.status_code == 200:
