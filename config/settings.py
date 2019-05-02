@@ -111,7 +111,7 @@ EMAIL_HOST_PASSWORD = 'pwd'
 # REST_USE_JWT = True
 REST_SESSION_LOGIN = False
 
-if 'instance' in socket.gethostname():
+if 'instance' not in socket.gethostname():
     API_URL = "http://127.0.0.1:8000/api"
     ALLOWED_HOSTS = []
     DEBUG = True
