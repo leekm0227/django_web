@@ -1,5 +1,5 @@
 import os
-from django.contrib.sites.models import Site
+import socket
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'h9lb28wfcxyxt)bt!l2ep-4(b4_!9#bv&(x0-nb^7s-62_qvx#'
@@ -14,7 +14,6 @@ TIME_ZONE = 'Asia/Seoul'
 STATIC_URL = '/static/'
 WSGI_APPLICATION = 'config.wsgi.application'
 ROOT_URLCONF = 'config.urls'
-DOMAIN = 'thell.ga'
 
 INSTALLED_APPS = [
     'api',
@@ -99,7 +98,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#allauth settings
+# allauth settings
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -109,11 +108,10 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'id'
 EMAIL_HOST_PASSWORD = 'pwd'
-#REST_USE_JWT = True
+# REST_USE_JWT = True
 REST_SESSION_LOGIN = False
 
-
-if DOMAIN != Site.objects.get_current().domain:
+if 'instance' in socket.gethostname():
     API_URL = "http://127.0.0.1:8000/api"
     ALLOWED_HOSTS = []
     DEBUG = True
@@ -130,7 +128,7 @@ if DOMAIN != Site.objects.get_current().domain:
         }
     }
 else:
-    API_URL = "https://{}/api".format(DOMAIN)
+    API_URL = "https://thell.ga/api"
     ALLOWED_HOSTS = ['*']
     DEBUG = False
 
