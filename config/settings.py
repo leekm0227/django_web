@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'livesync',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
@@ -41,6 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'livesync.core.middleware.DjangoLiveSyncMiddleware',
 ]
 
 REST_FRAMEWORK = {

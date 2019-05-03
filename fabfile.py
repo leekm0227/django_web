@@ -9,6 +9,6 @@ PROJECT_DIR = '/home/{}/{}'.format(env.user, PROJECT_NAME)
 
 def deploy():
     run('date')
-    run('uwsgi --stop ' + PROJECT_DIR + '/uwsgi.pid')
+    #run('uwsgi --stop ' + PROJECT_DIR + '/uwsgi.pid')
     run('git --git-dir=' + PROJECT_DIR + '/.git pull')
-    run('uwsgi --ini ' + PROJECT_DIR + '/uwsgi.ini')
+    #run('uwsgi --ini ' + PROJECT_DIR + '/uwsgi.ini')
