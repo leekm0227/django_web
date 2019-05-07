@@ -10,4 +10,4 @@ uwsgi
 request
 requests
 urllib3
-django-livesync
+mongoengine
