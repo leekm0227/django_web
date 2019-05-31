@@ -1,0 +1,15 @@
+{% extends "include/layout.html" %}
+
+{% block content %}
+    <div>
+        <form id="frmLogin">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.META.HTTP_REFERER }}">
+            <input type="text" id="email" name="email" placeholder="email">
+            <br>
+            <input type="password" id="pwd" name="password" placeholder="password">
+            <br>
+            <input type="button" value="login" id="login">
+        </form>
+    </div>
+{% endblock %}

@@ -1,16 +1,7 @@
-{% extends "layout.html" %}
+{% extends "include/layout.html" %}
 
 {% block content %}
-
-    {% if list %}
-        {% for data in list.results %}
-            {{ data.username }}<br>
-            {{ data.title }}<br>
-            {{ data.content }}<br>
-            ----------<br>
-        {% endfor %}
-    {% else %}
-        empty
-    {% endif %}
-
+    <div>
+        main
+    </div>
 {% endblock %}

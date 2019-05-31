@@ -1,0 +1,16 @@
+{% extends "include/layout.html" %}
+
+{% block content %}
+    <div>
+        {% if list.count > 0 %}
+            {% for data in list.results %}
+                {{ data.username }}<br>
+                {{ data.title }}<br>
+                {{ data.content }}<br>
+                ----------<br>
+            {% endfor %}
+        {% else %}
+            empty
+        {% endif %}
+    </div>
+{% endblock %}

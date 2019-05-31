@@ -1,0 +1,24 @@
+{% if messages %}
+    <script>
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+        history.go(-1);
+    </script>
+{% endif %}
+<div style="float: left;">
+    <a href="/">home</a> |
+    <a href="/tssr">tesseract</a> |
+    <a href="/article">article</a>
+</div>
+<div style="float: right;">
+    {% if request.COOKIES.token %}
+        {{ request.COOKIES.username }} |
+        <a href="#" class="btnLogout">logout</a>
+    {% else %}
+        <a href='#' class="btnLogin">login</a> |
+        <a href='#' class="btnJoin">join</a>
+    {% endif %}
+</div>
+<br>
+<hr>

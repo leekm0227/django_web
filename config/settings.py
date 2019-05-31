@@ -3,7 +3,6 @@ import socket
 import datetime
 import mongoengine
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'h9lb28wfcxyxt)bt!l2ep-4(b4_!9#bv&(x0-nb^7s-62_qvx#'
 
@@ -11,7 +10,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 DEBUG = True
-# APPEND_SLASH = False
+APPEND_SLASH = True
 SITE_ID = 1
 LANGUAGE_CODE = 'ko-kr'
 TIME_ZONE = 'Asia/Seoul'
@@ -20,6 +19,35 @@ WSGI_APPLICATION = 'config.wsgi.application'
 ROOT_URLCONF = 'config.urls'
 API_URL = "http://127.0.0.1:8000/api/"
 ALLOWED_HOSTS = []
+
+# db settings
+DB_NAME = 'django'
+DB_USER = 'django'
+DB_PASSWORD = '1234'
+DB_HOST = '35.239.104.137'
+DB_PORT = '3306'
+DB_OPTION = {
+    'sql_mode': 'TRADITIONAL',
+    'charset': 'utf8',
+    'init_command': "SET storage_engine=INNODB, "
+                    "character_set_connection=utf8, "
+                    "collation_connection=utf8_general_ci, "
+                    "sql_mode='STRICT_TRANS_TABLES'"
+}
+
+# allauth settings
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = "none"
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'id'
+EMAIL_HOST_PASSWORD = 'pwd'
+REST_USE_JWT = False
+REST_SESSION_LOGIN = False
+REST_AUTH_TOKEN_CREATOR = 'api.common.create_token'
 
 INSTALLED_APPS = [
     'api',
@@ -55,8 +83,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -85,12 +113,12 @@ TEMPLATES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',
-        'USER': 'django',
-        'PASSWORD': '1234',
-        'HOST': '35.239.104.137',
-        'PORT': '3306',
-        'OPTION': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
+        'OPTION': DB_OPTION,
     }
 }
 
@@ -120,25 +148,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_AUTH_SERIALIZERS = {
+}
+
 JWT_AUTH = {
     'JWT_PAYLOAD_HANDLER': 'api.common.jwt_payload_handler',
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'api.common.jwt_response_payload_handler',
     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }
-
-# allauth settings
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = "none"
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'id'
-EMAIL_HOST_PASSWORD = 'pwd'
-REST_USE_JWT = True
-REST_SESSION_LOGIN = False
 
 if 'instance' in socket.gethostname():
     API_URL = "https://thell.ga/api"
@@ -148,11 +166,11 @@ if 'instance' in socket.gethostname():
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'django',
-            'USER': 'django',
-            'PASSWORD': '1234',
-            'HOST': '35.239.104.137',
-            'PORT': '3306',
-            'OPTION': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
+            'NAME': DB_NAME,
+            'USER': DB_USER,
+            'PASSWORD': DB_PASSWORD,
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
+            'OPTION': DB_OPTION,
         }
     }

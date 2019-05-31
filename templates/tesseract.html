@@ -1,0 +1,12 @@
+{% extends "include/layout.html" %}
+
+{% block content %}
+    <div>
+        <form method="post" enctype="multipart/form-data" name="tssrFrm">
+            <input type="button" value="submit" id="tssr">
+            <input type="file" name="img" id="tssrImg">
+        </form>
+        <div id="tssrImgView"></div>
+        <div id="tssrTxt"></div>
+    </div>
+{% endblock %}

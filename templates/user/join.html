@@ -1,0 +1,19 @@
+{% extends "include/layout.html" %}
+
+{% block content %}
+    <div>
+        <form id="frmJoin">
+            {% csrf_token %}
+            <input type="email" id="email" name="email" placeholder="email" autocomplete="new-password">
+            <br>
+            <input type="text" id="name" name="username" placeholder="name" autocomplete="new-password">
+            <br>
+            <input type="password" id="pwd1" name="password1" placeholder="password" autocomplete="new-password">
+            <br>
+            <input type="password" id="pwd2" name="password2" placeholder="confirm password"
+                   autocomplete="new-password">
+            <br>
+            <input type="button" value="join" id="join">
+        </form>
+    </div>
+{% endblock %}

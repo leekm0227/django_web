@@ -1,31 +1,82 @@
+from web.common import View
 from django.shortcuts import render
-from django.conf import settings
+from django.contrib import messages
 from django.http import *
-import requests
-
-header = {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
+from .form import *
 
 
-def index(request):
-    context = {}
-    data = requests.get(settings.API_URL + 'articles/')
-
-    if data.status_code == 200:
-        context = {'list': data.json()}
-
-    return render(request, 'index.html', context)
+class Tssr(View):
+    template = 'tesseract.html'
 
 
-def login(request):
-    if request.method == "POST":
-        data = requests.post(settings.API_URL + 'auth/login/', data=request.body.decode('utf-8'), headers=header)
+class Login(View):
+    template = 'user/login.html'
 
-        if data.status_code == 200:
-            data = data.json()
-            response = HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            response.set_cookie(key="token", value=data["token"])
-            return response
+    def post(self, req):
+        form = LoginForm(req.POST)
+
+        if form.is_valid():
+            data = self.api(method='post', uri='auth/login/', data=form.cleaned_data)
+
+            if data is not None:
+                self.token = data["key"]
+                data = self.api(uri='auth/user/')
+                res = HttpResponseRedirect(req.POST["next"])
+                res.set_cookie(key="token", value=self.enc(self.token))
+                res.set_cookie(key="username", value=data['username'])
+                return res
+
+        messages.info(req, "plz check email, pwd")
+        return render(req, self.template)
+
+    def get(self, req):
+        if self.token is not None:
+            return HttpResponseRedirect("/")
         else:
-            return HttpResponseBadRequest()
-    else:
-        return HttpResponseNotFound()
+            return super().get(req)
+
+
+class Article(View):
+    template = 'article.html'
+
+    def get(self, req):
+        self.context = self.api(uri='articles/')
+        return super().get(req)
+
+
+class Index(View):
+    template = 'index.html'
+
+
+class Join(View):
+    template = 'user/join.html'
+
+    def post(self, req):
+        form = JoinForm(req.POST)
+
+        if form.is_valid():
+            data = self.api(method='post', uri='auth/register/', data=form.cleaned_data)
+
+            if data is not None:
+                self.token = data["key"]
+                data = self.api(uri='auth/user/')
+                res = HttpResponseRedirect('/')
+                res.set_cookie(key="token", value=self.enc(self.token))
+                res.set_cookie(key="username", value=data['username'])
+                return res
+
+        messages.error(req, "plz check email, name, pwd")
+        return render(req, self.template)
+
+    def get(self, req):
+        if self.token is not None:
+            return HttpResponseRedirect("/")
+        else:
+            return super().get(req)
+
+
+def logout(req):
+    res = HttpResponseRedirect(req.META['HTTP_REFERER'])
+    res.delete_cookie(key="token")
+    res.delete_cookie(key="username")
+    return res
