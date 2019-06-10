@@ -11,9 +11,6 @@ bs = 32
 key = hashlib.sha256(settings.SECRET_KEY[:32].encode()).digest()
 
 
-# suffix = "html"
-
-
 class View(BaseView):
     token = None
     template = 'index'
@@ -21,7 +18,6 @@ class View(BaseView):
     context = {}
 
     def get(self, request):
-        # return render(request, "{}.{}".format(self.template, suffix), self.context)
         return render(request, self.template, self.context)
 
     def dispatch(self, request, *args, **kwargs):

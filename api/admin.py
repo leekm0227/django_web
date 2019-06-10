@@ -3,5 +3,5 @@ from api.models import *
 
 
 admin.site.register(Item)
-admin.site.register(Article)
+admin.site.register(Test)
 admin.register(Log)
