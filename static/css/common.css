@@ -6,3 +6,15 @@ body > div {
 a {
     padding: 0px 5px 0px 5px;
 }
+
+.table > .row {
+    margin: 0px;
+}
+
+.content > div {
+    text-align: center;
+}
+
+table{
+    width: 100%;
+}

@@ -1,3 +1,4 @@
+import json
 from web.common import View
 from django.shortcuts import render
 from django.contrib import messages
@@ -40,7 +41,7 @@ class Article(View):
     template = 'article.html'
 
     def get(self, req):
-        self.context = self.api(uri='articles/')
+        self.context = {'list': self.api(uri='articles/')}
         return super().get(req)
 
 

@@ -9,7 +9,16 @@ class Test(serializers.ModelSerializer):
 
     class Meta:
         model = models.Test
-        fields = ('user', 'username', 'title', 'content', 'reg_date', 'mod_date')
+        fields = ('id', 'user', 'username', 'title', 'content', 'reg_date', 'mod_date')
+
+
+class TestTest(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = models.TestTest
+        fields = ('id', 'user', 'username', 'content', 'reg_date', 'mod_date')
 
 
 class Log(DocumentSerializer):
@@ -18,17 +27,15 @@ class Log(DocumentSerializer):
         read_only_fields = ('key', 'value')
 
 
+class Article(DocumentSerializer):
+    class Meta:
+        model = models.Article
+        fields = ('id', 'user', 'reg_date', 'mod_date', 'title', 'content')
+        read_only_fields = ('id', 'reg_date', 'mod_date')
+
+
 class Comment(DocumentSerializer):
     class Meta:
         model = models.Comment
-        fields = ('user_id', 'content', 'reg_date')
-        read_only_fields = ('id', 'info', 'reg_date', 'mod_date')
-
-
-class Article(DocumentSerializer):
-    comments = Comment
-
-    class Meta:
-        model = models.Article
-        fields = ('user_id', 'title', 'content', 'comments')
-        read_only_fields = ('id', 'info', 'reg_date', 'mod_date')
+        fields = ('id', 'user', 'reg_date', 'mod_date', 'content')
+        read_only_fields = ('id', 'reg_date', 'mod_date')

@@ -1,8 +1,6 @@
-from functools import wraps
-
 from django.db import models
 from datetime import datetime
-from mongoengine import (Document, DynamicDocument, DynamicEmbeddedDocument, EmbeddedDocument, fields)
+from mongoengine import (DynamicDocument, fields)
 from rest_framework_jwt.settings import api_settings
 
 META = {
@@ -13,7 +11,6 @@ META = {
     # 'index_background': True,
     # 'auto_create_index': True,
 }
-
 
 def create_token(token_model, user, serializer):
     token_model.objects.filter(user=user).delete()
@@ -41,7 +38,7 @@ def jwt_response_payload_handler(token, user=None, request=None):
 
 
 class AbstractModel(models.Model):
-    id = fields.SequenceField(primary_key=True)
+    id = models.AutoField(primary_key=True, unique=True)
     reg_date = models.DateTimeField(auto_now_add=True)
     mod_date = models.DateTimeField(auto_now=True)
     is_delete = models.BooleanField(default=False)
@@ -52,7 +49,7 @@ class AbstractModel(models.Model):
 
 class AbstractDynamicDocument(DynamicDocument):
     id = fields.SequenceField(primary_key=True)
-    user_id = fields.IntField(required=True)
+    user = fields.DictField(required=True)
     reg_date = fields.DateTimeField(default=datetime.now())
     mod_date = fields.DateTimeField(default=datetime.now())
     is_delete = fields.BooleanField(default=False)
@@ -65,20 +62,3 @@ class AbstractDynamicDocument(DynamicDocument):
             self.reg_date = datetime.now()
 
         return super(AbstractDynamicDocument, self).save(*args, **kwargs)
-
-
-class AbstractDynamicEmbeddedDocument(DynamicEmbeddedDocument):
-    id = fields.SequenceField(primary_key=True)
-    user_id = fields.IntField(required=True)
-    reg_date = fields.DateTimeField(default=datetime.now())
-    mod_date = fields.DateTimeField(default=datetime.now())
-    is_delete = fields.BooleanField(default=False)
-    meta = META
-
-    def save(self, *args, **kwargs):
-        self.mod_date = datetime.now()
-
-        if not self.reg_date:
-            self.reg_date = datetime.now()
-
-        return super(AbstractDynamicEmbeddedDocument, self)._instance.save(*args, **kwargs)

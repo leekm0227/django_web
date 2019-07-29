@@ -3,7 +3,6 @@ from api.common import *
 
 
 class Item(AbstractModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=10)
     type1 = models.IntegerField(unique=True)
     type2 = models.IntegerField(unique=True)
@@ -15,18 +14,22 @@ class Test(AbstractModel):
     content = models.TextField(max_length=5000)
 
 
+class TestTest(AbstractModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    content = models.TextField(max_length=5000)
+
+
 class Log(AbstractDynamicDocument):
     name = fields.StringField(required=True)
     value = fields.DictField(required=True)
 
 
-class Comment(AbstractDynamicEmbeddedDocument):
-    info = fields.DictField()
-    content = fields.StringField(required=True)
-
-
 class Article(AbstractDynamicDocument):
-    info = fields.DictField()
     title = fields.StringField(required=True)
     content = fields.StringField(required=True)
-    comments = fields.ListField(fields.EmbeddedDocumentField(Comment))
+
+
+class Comment(AbstractDynamicDocument):
+    article = fields.ReferenceField('Article')
+    content = fields.StringField(required=True)

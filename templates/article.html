@@ -1,16 +1,33 @@
 {% extends "include/layout.html" %}
-
+{% load filters %}
 {% block content %}
-    <div>
-        {% if list.count > 0 %}
-            {% for data in list.results %}
-                {{ data.username }}<br>
-                {{ data.title }}<br>
-                {{ data.content }}<br>
-                ----------<br>
-            {% endfor %}
-        {% else %}
-            empty
-        {% endif %}
+    <div class="content">
+        <div class="table">
+            <table>
+                <tr>
+                    <th style="width: 10%">idx</th>
+                    <th style="width: 50%">title</th>
+                    <th style="width: 15%">user</th>
+                    <th style="width: 25%">reg_date</th>
+                </tr>
+                {% for item in list %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.user.username }}</td>
+                        <td>{{ item.reg_date }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="paging">
+            {{ list|paging:111 }}
+        </div>
+        <div class="search">
+            <input type="text" placeholder="TITLE">
+            <input type="button" value="SEARCH">
+        </div>
     </div>
+
+
 {% endblock %}

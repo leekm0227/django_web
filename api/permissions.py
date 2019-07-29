@@ -31,7 +31,7 @@ class Document:
             if request.method in permissions.SAFE_METHODS:
                 return True
 
-            return obj.user_id == request.user.pk
+            return obj.user['id'] == request.user.pk
 
     class IsAuthenticatedOrReadOnly(permissions.BasePermission):
         def has_permission(self, request, view):
@@ -40,8 +40,13 @@ class Document:
 
             if not request.user.is_anonymous:
                 jsonbody = json.loads(request.body.decode('utf-8'))
-                jsonbody['user_id'] = request.user.pk
+                jsonbody['user'] = {
+                    'id': request.user.pk,
+                    'username': request.user.username,
+                    'email': request.user.email
+                }
                 request.body = json.dumps(jsonbody).encode('utf-8')
+                print(request.body)
                 return True
 
             return False
