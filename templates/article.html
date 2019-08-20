@@ -2,6 +2,21 @@
 {% load filters %}
 {% block content %}
     <div class="content">
+        {% if article %}
+            <div class="article">
+                <div class="title">
+                    {{ article.title }} | {{ article.user.username }} | {{ article.reg_date }}
+                </div>
+                <div class="content">
+                    {{ article.content }}
+                </div>
+                <div class="comment">
+                    {% for item in comment.results %}
+                        <div>{{ item.user.username }} | {{ item.content }} | {{ item.reg_date }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
         <div class="table">
             <table>
                 <tr>
@@ -10,10 +25,10 @@
                     <th style="width: 15%">user</th>
                     <th style="width: 25%">reg_date</th>
                 </tr>
-                {% for item in list %}
+                {% for item in list.results %}
                     <tr>
                         <td>{{ item.id }}</td>
-                        <td>{{ item.title }}</td>
+                        <td><a href="/article/{{ item.id }}?{{ request.GET.urlencode }}">{{ item.title }}</a></td>
                         <td>{{ item.user.username }}</td>
                         <td>{{ item.reg_date }}</td>
                     </tr>
@@ -21,7 +36,7 @@
             </table>
         </div>
         <div class="paging">
-            {{ list|paging:111 }}
+            {% paging request list.count %}
         </div>
         <div class="search">
             <input type="text" placeholder="TITLE">

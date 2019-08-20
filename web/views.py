@@ -30,7 +30,7 @@ class Login(View):
         messages.info(req, "plz check email, pwd")
         return render(req, self.template)
 
-    def get(self, req):
+    def get(self, req, **kwargs):
         if self.token is not None:
             return HttpResponseRedirect("/")
         else:
@@ -40,8 +40,19 @@ class Login(View):
 class Article(View):
     template = 'article.html'
 
-    def get(self, req):
-        self.context = {'list': self.api(uri='articles/')}
+    def get(self, req, **kwargs):
+        if 'pk' in self.kwargs:
+            print(self.kwargs['pk'])
+            self.context['article'] = self.api(uri='articles/{pk}/'.format(pk=self.kwargs['pk']))
+            self.context['comment'] = self.api(uri='articles/{pk}/comments/'.format(pk=self.kwargs['pk']))
+
+        if 'article' in self.context:
+            print(self.context['article'])
+
+        if 'comment' in self.context:
+            print(self.context['comment'])
+
+        self.context['list'] = self.api(uri='articles/?page={page}'.format(page=req.GET.get('page', 1)))
         return super().get(req)
 
 
@@ -69,7 +80,7 @@ class Join(View):
         messages.error(req, "plz check email, name, pwd")
         return render(req, self.template)
 
-    def get(self, req):
+    def get(self, req, **kwargs):
         if self.token is not None:
             return HttpResponseRedirect("/")
         else:

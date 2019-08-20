@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view, renderer_classes, permission_classes
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, get_object_or_404
+from rest_framework.generics import *
 from rest_framework_mongoengine.generics import ListCreateAPIView as DocListCreateAPIView
 from rest_framework_mongoengine.generics import RetrieveUpdateAPIView as DocRetrieveUpdateAPIView
 from rest_framework_mongoengine.generics import get_object_or_404 as doc_get_object_or_404
@@ -12,40 +12,13 @@ from api import models, serializers
 from util import tesseract
 
 
-class TestDetail(RetrieveUpdateAPIView):
-    queryset = models.Test.objects.all()
-    serializer_class = serializers.Test
-    permission_classes = (Model.IsOwnerOrReadOnly,)
+class Data(RetrieveAPIView):
+    queryset = models.Data.objects.all()
+    serializer_class = serializers.Data
+    permission_classes = (Model.IsAuthenticated,)
 
 
-class TestList(ListCreateAPIView):
-    queryset = models.Test.objects.all().order_by("-reg_date")
-    serializer_class = serializers.Test
-    permission_classes = (Model.IsAuthenticatedOrReadOnly,)
-
-
-class TestTestDetail(RetrieveUpdateAPIView):
-    serializer_class = serializers.TestTest
-    permission_classes = (Model.IsOwnerOrReadOnly,)
-
-    def get_object(self):
-        obj = get_object_or_404(models.TestTest.objects.filter(id=self.kwargs['testtest_id']))
-        self.check_object_permissions(self.request, obj)
-        return obj
-
-
-class TestTestList(ListCreateAPIView):
-    serializer_class = serializers.TestTest
-    permission_classes = (Model.IsAuthenticatedOrReadOnly,)
-
-    def perform_create(self, serializer):
-        test = models.Test.objects.get(id=self.kwargs['pk'])
-        serializer.save(test=test)
-
-    def get_queryset(self):
-        return models.TestTest.objects.filter(test__id=self.kwargs['pk']).order_by("reg_date")
-
-
+# ======================================== MONGODB VIEW ================================================================
 class Log(DocListCreateAPIView):
     queryset = models.Log.objects.all().order_by("-reg_date")
     serializer_class = serializers.Log
@@ -67,6 +40,19 @@ class ArticleList(DocListCreateAPIView):
     queryset = models.Article.objects.all().order_by("-reg_date")
     serializer_class = serializers.Article
     permission_classes = (Document.IsAuthenticatedOrReadOnly,)
+    doc_filterset_fields = ('title', 'content')
+
+    def get_queryset(self):
+        filter_kwargs = {}
+
+        for field in self.doc_filterset_fields:
+            if field in self.request.GET:
+                filter_kwargs["{field}__contains".format(field=field)] = self.request.GET[field]
+
+        if filter_kwargs:
+            self.queryset = models.Article.objects.filter(**filter_kwargs).order_by("-reg_date")
+
+        return self.queryset
 
 
 class CommentDetail(DocRetrieveUpdateAPIView):

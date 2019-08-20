@@ -4,7 +4,7 @@ body > div {
 }
 
 a {
-    padding: 0px 5px 0px 5px;
+    padding: 5px 10px 5px 10px;
 }
 
 .table > .row {
@@ -13,8 +13,16 @@ a {
 
 .content > div {
     text-align: center;
+    margin: auto;
+    max-width: 80%;
+
 }
 
-table{
+a.on {
+    color: #1244b3;
+    text-decoration: underline
+}
+
+table {
     width: 100%;
 }

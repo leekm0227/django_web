@@ -17,7 +17,7 @@ class View(BaseView):
     header = {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
     context = {}
 
-    def get(self, request):
+    def get(self, request, **kwargs):
         return render(request, self.template, self.context)
 
     def dispatch(self, request, *args, **kwargs):

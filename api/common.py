@@ -12,6 +12,7 @@ META = {
     # 'auto_create_index': True,
 }
 
+
 def create_token(token_model, user, serializer):
     token_model.objects.filter(user=user).delete()
     token, _ = token_model.objects.get_or_create(user=user)
@@ -50,6 +51,7 @@ class AbstractModel(models.Model):
 class AbstractDynamicDocument(DynamicDocument):
     id = fields.SequenceField(primary_key=True)
     user = fields.DictField(required=True)
+    info = fields.DictField(null=True)
     reg_date = fields.DateTimeField(default=datetime.now())
     mod_date = fields.DateTimeField(default=datetime.now())
     is_delete = fields.BooleanField(default=False)
@@ -57,8 +59,4 @@ class AbstractDynamicDocument(DynamicDocument):
 
     def save(self, *args, **kwargs):
         self.mod_date = datetime.now()
-
-        if not self.reg_date:
-            self.reg_date = datetime.now()
-
         return super(AbstractDynamicDocument, self).save(*args, **kwargs)
