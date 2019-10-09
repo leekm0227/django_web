@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import *
+from farm.models import *
 
 
 @admin.register(Type)
@@ -35,8 +35,8 @@ class InventoryInline(admin.TabularInline):
     extra = 10
 
 
-@admin.register(Data)
-class DataAdmin(admin.ModelAdmin):
+@admin.register(Account)
+class AccountAdmin(admin.ModelAdmin):
     list_display = ('user_name',)
     inlines = (InventoryInline,)
 

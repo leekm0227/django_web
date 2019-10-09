@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime
+
+from django.forms.models import model_to_dict
 from mongoengine import (DynamicDocument, fields)
 from rest_framework_jwt.settings import api_settings
 
@@ -43,6 +45,9 @@ class AbstractModel(models.Model):
     reg_date = models.DateTimeField(auto_now_add=True)
     mod_date = models.DateTimeField(auto_now=True)
     is_delete = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(model_to_dict(self))
 
     class Meta:
         abstract = True

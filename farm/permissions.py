@@ -5,7 +5,7 @@ import json
 class Model:
     class IsAuthenticated(permissions.BasePermission):
         def has_permission(self, request, view):
-            return bool(request.user)
+            return bool(request.user and request.user.is_authenticated)
 
     class IsOwnerOrReadOnly(permissions.BasePermission):
         def has_object_permission(self, request, view, obj):
@@ -19,14 +19,14 @@ class Model:
             if request.method in permissions.SAFE_METHODS:
                 return True
 
-            return request.user is not None
+            return bool(request.user and request.user.is_authenticated)
 
     class IsAuthenticatedOrAdminOnly(permissions.BasePermission):
         def has_permission(self, request, view):
             if request.method in permissions.SAFE_METHODS:
                 return bool(request.user.is_staff)
 
-            return bool(request.user)
+            return bool(request.user and request.user.is_authenticated)
 
     class IsAdminOrReadOnly(permissions.BasePermission):
         def has_permission(self, request, view):

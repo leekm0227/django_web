@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_mongoengine.serializers import DocumentSerializer
-from api import models
+from farm import models
 
 
 class Item(serializers.ModelSerializer):
@@ -9,12 +9,18 @@ class Item(serializers.ModelSerializer):
         fields = ('name', 'grade', 'type')
 
 
-class Data(serializers.ModelSerializer):
-    item = Item(many=True, read_only=True)
+class Inventory(serializers.ModelSerializer):
+    class Meta:
+        model = models.Inventory
+        fields = ('item', 'amount')
+
+
+class Account(serializers.ModelSerializer):
+    inventory = Inventory(many=True, read_only=True)
 
     class Meta:
-        model = models.Data
-        fields = ('item',)
+        model = models.Account
+        fields = ('inventory',)
 
 
 class Log(DocumentSerializer):

@@ -50,7 +50,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/api/tssr/",
+            url: "/farm/tssr/",
             dataType: "json",
             contentType: false,
             processData: false,

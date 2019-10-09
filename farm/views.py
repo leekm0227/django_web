@@ -1,21 +1,33 @@
+from mongoengine.queryset.visitor import Q
 from rest_framework.decorators import api_view, renderer_classes, permission_classes
 from rest_framework.generics import *
-from rest_framework_mongoengine.generics import ListCreateAPIView as DocListCreateAPIView
-from rest_framework_mongoengine.generics import RetrieveUpdateAPIView as DocRetrieveUpdateAPIView
-from rest_framework_mongoengine.generics import get_object_or_404 as doc_get_object_or_404
-from mongoengine.queryset.visitor import Q
 from rest_framework.permissions import AllowAny
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from api.permissions import Model, Document
-from api import models, serializers
+from rest_framework_mongoengine.generics import ListCreateAPIView as DocListCreateAPIView
+from rest_framework_mongoengine.generics import RetrieveUpdateAPIView as DocRetrieveUpdateAPIView
+from rest_framework_mongoengine.generics import get_object_or_404 as doc_get_object_or_404
+
+from farm import models, serializers
+from farm.permissions import Model, Document
 from util import tesseract
 
 
-class Data(RetrieveAPIView):
-    queryset = models.Data.objects.all()
-    serializer_class = serializers.Data
+class Account(RetrieveAPIView):
+    serializer_class = serializers.Account
     permission_classes = (Model.IsAuthenticated,)
+
+    def get_object(self):
+        obj = models.Account.objects.get_or_create(user=self.request.user)
+        print(obj)
+        return obj[0]
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        print(serializer)
+        print(Response(serializer.data))
+        return Response(serializer.data)
 
 
 # ======================================== MONGODB VIEW ================================================================

@@ -22,9 +22,9 @@ ALLOWED_HOSTS = []
 
 # db settings
 DB_NAME = 'django'
-DB_USER = 'django'
+DB_USER = 'root'
 DB_PASSWORD = '1234'
-DB_HOST = '35.239.104.137'
+DB_HOST = '127.0.0.1'
 DB_PORT = '3306'
 DB_OPTION = {
     'sql_mode': 'TRADITIONAL',
@@ -47,10 +47,10 @@ EMAIL_HOST_USER = 'id'
 EMAIL_HOST_PASSWORD = 'pwd'
 REST_USE_JWT = False
 REST_SESSION_LOGIN = False
-REST_AUTH_TOKEN_CREATOR = 'api.common.create_token'
+REST_AUTH_TOKEN_CREATOR = 'farm.core.create_token'
 
 INSTALLED_APPS = [
-    'api',
+    'farm',
     'web',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -156,8 +156,8 @@ REST_AUTH_SERIALIZERS = {
 }
 
 JWT_AUTH = {
-    'JWT_PAYLOAD_HANDLER': 'api.common.jwt_payload_handler',
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'api.common.jwt_response_payload_handler',
+    'JWT_PAYLOAD_HANDLER': 'farm.core.jwt_payload_handler',
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'farm.core.jwt_response_payload_handler',
     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }
